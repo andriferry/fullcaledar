@@ -31,9 +31,14 @@ export default {
                 eventMouseLeave: info => this.closeTooltip(info),
                 initialView: 'dayGridMonth',
                 events: [
-                    {title: 'James', date: '2022-07-02'},
+                    {title: 'James', start: '2022-07-02'},
                     {title: 'John', date: '2022-07-09'},
                     {title: 'Thomas', date: '2022-07-09'},
+                    {
+                        title: 'Tomy',
+                        start: '2022-07-20',
+                        end: '2022-07-30',
+                    },
                 ],
             },
         };
