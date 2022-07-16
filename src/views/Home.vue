@@ -1,34 +1,38 @@
 <template>
     <div class="home">
         <FullCalendar :options="calendarOptions" />
+        <div id="tooltipTrial" role="tooltip">
+            <div id="tooltip" class="tooltip">
+                <div class="title">
+                    <p class="title-event">Casual leave</p>
+                    <p class="day">1 DAY</p>
+                    <p class="status">personal</p>
+                </div>
+                <div class="user-container">
+                    <div class="user">
+                        <div class="avatar-container">
+                            <div class="avatar">
+                                <p class="" style="margin: 0px; padding: 10px">
+                                    JH
+                                </p>
+                            </div>
+                        </div>
 
-        <div id="tooltip" class="tooltip">
-            <div class="title">
-                <p class="title-event">Casual leave</p>
-                <p class="day">1 DAY</p>
-                <p class="status">personal</p>
-            </div>
-            <div class="user-container">
-                <div class="user">
-                    <div class="avatar-container">
-                        <div class="avatar">
-                            <p class="" style="margin: 0px; padding: 10px">
-                                JH
+                        <div class="user-info">
+                            <p class="user-name" style="margin: 0px">
+                                Janitha Harischandra
+                            </p>
+                            <p class="user-task" style="margin: 0px">
+                                ArcticHare
                             </p>
                         </div>
                     </div>
-
-                    <div class="user-info">
-                        <p class="user-name" style="margin: 0px">
-                            Janitha Harischandra
-                        </p>
-                        <p class="user-task" style="margin: 0px">ArcticHare</p>
-                    </div>
                 </div>
-            </div>
 
-            <button role="button">View Details ></button>
-            <button role="button" class="cancel">Cancel</button>
+                <button role="button">View Details ></button>
+                <button role="button" class="cancel">Cancel</button>
+            </div>
+            <div id="arrow" data-popper-arrow></div>
         </div>
     </div>
 </template>
@@ -42,6 +46,7 @@ import 'tippy.js/dist/tippy.css'; // optional for styling
 import 'tippy.js/animations/scale.css';
 import Tooltips from '../components/Tooltips.vue';
 import 'tippy.js/themes/light.css';
+import {createPopper} from '@popperjs/core';
 
 export default {
     name: 'Home',
@@ -52,7 +57,9 @@ export default {
         return {
             calendarOptions: {
                 plugins: [dayGridPlugin, interactionPlugin],
-                eventDidMount: info => this.renderTooltip(info.el),
+
+                eventMouseEnter: info => this.renderTooltip(info),
+                eventMouseLeave: info => this.closeTooltip(info),
                 initialView: 'dayGridMonth',
                 events: [
                     {title: 'new event 1', date: '2022-07-02'},
@@ -62,69 +69,61 @@ export default {
         };
     },
     methods: {
-        renderTooltip(el) {
-            const tooltip = document.getElementById('tooltip');
+        closeTooltip(event) {
+            const tooltip = document.getElementById('tooltipTrial');
+            tooltip.removeAttribute('data-show');
+        },
+        renderTooltip(event) {
+            const tooltip = document.getElementById('tooltipTrial');
 
-            tippy(el, {
-                content: 'template.innerHTML',
-                render(instance) {
-                    const popper = document.createElement('div');
-                    const box = document.createElement('div');
-
-                    popper.appendChild(box);
-
-                    box.appendChild(tooltip);
-                    // function onUpdate(prevProps, nextProps) {
-                    //     if (prevProps.content !== nextProps.content) {
-                    //         box.textContent = nextProps.content;
-                    //     }
-                    // }
-
-                    return {
-                        popper,
-                        // onUpdate, // optional
-                    };
-                },
-                animation: 'fade',
-                allowHTML: true,
-                theme: 'light',
+            const popperInstance = createPopper(event.el, tooltip, {
+                modifiers: [
+                    {
+                        name: 'offset',
+                        options: {
+                            offset: [0, 8],
+                        },
+                    },
+                ],
             });
+
+            function show() {
+                tooltip.setAttribute('data-show', '');
+
+                // We need to tell Popper to update the tooltip position
+                // after we show the tooltip, otherwise it will be incorrect
+                popperInstance.update();
+            }
+
+            show();
+
+            // tippy(el, {
+            //     content: 'template.innerHTML',
+            //     render(instance) {
+            //         const popper = document.createElement('div');
+            //         const box = document.createElement('div');
+
+            //         popper.appendChild(box);
+
+            //         box.appendChild(tooltip);
+            //         // function onUpdate(prevProps, nextProps) {
+            //         //     if (prevProps.content !== nextProps.content) {
+            //         //         box.textContent = nextProps.content;
+            //         //     }
+            //         // }
+
+            //         return {
+            //             popper,
+            //             // onUpdate, // optional
+            //         };
+            //     },
+            //     animation: 'fade',
+            //     allowHTML: true,
+            //     theme: 'light',
+            // });
             // console.log(event);
             // // console.log(event.view.getCurrentData());
             // console.log(event.event.title);
-        },
-        handleDateClick(event) {
-            console.log('Checkit');
-            if (event.el) {
-                tippy(event.el, {
-                    content: 'template.innerHTML',
-                    render(instance) {
-                        const popper = document.createElement('div');
-                        const box = document.getElementById('tooltip');
-
-                        popper.appendChild(box);
-                        function onUpdate(prevProps, nextProps) {
-                            // DOM diffing
-                            if (prevProps.content !== nextProps.content) {
-                                box.textContent = nextProps.content;
-                            }
-                        }
-                        // Return an object with two properties:
-                        // - `popper` (the root popper element)
-                        // - `onUpdate` callback whenever .setProps() or .setContent() is called
-                        return {
-                            popper,
-                            onUpdate, // optional
-                        };
-                    },
-                    animation: 'fade',
-                    allowHTML: true,
-                    theme: 'light',
-                });
-                // console.log(event);
-                // // console.log(event.view.getCurrentData());
-                // console.log(event.event.title);
-            }
         },
     },
 };
@@ -238,5 +237,50 @@ button.cancel {
     text-transform: none;
     font-weight: 700;
     font-size: 15px;
+}
+#tooltipTrial {
+    z-index: 99;
+    color: white;
+    font-weight: bold;
+
+    border-radius: 4px;
+    display: none;
+}
+#tooltipTrial[data-show] {
+    display: block;
+}
+
+#tooltipTrial[data-popper-placement^='top'] > #arrow {
+    bottom: -4px;
+}
+
+#tooltipTrial[data-popper-placement^='bottom'] > #arrow {
+    top: -4px;
+}
+
+#tooltipTrial[data-popper-placement^='left'] > #arrow {
+    right: -4px;
+}
+
+#tooltipTrial[data-popper-placement^='right'] > #arrow {
+    left: -4px;
+}
+
+#arrow,
+#arrow::before {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: inherit;
+}
+
+#arrow {
+    visibility: hidden;
+}
+
+#arrow::before {
+    visibility: visible;
+    content: '';
+    transform: rotate(45deg);
 }
 </style>
