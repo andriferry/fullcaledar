@@ -2,7 +2,7 @@
     <div class="home">
         <FullCalendar :options="calendarOptions" />
         <div id="tooltip-box" role="tooltip">
-            <Tooltips :currentEvent="currentEvent" />
+            <Tooltips :currentEvent="currentEvent" :timeline="timeline" />
 
             <div id="arrow" data-popper-arrow></div>
         </div>
@@ -25,14 +25,15 @@ export default {
     data() {
         return {
             currentEvent: '',
+            timeline: '',
             calendarOptions: {
                 plugins: [dayGridPlugin, interactionPlugin],
                 eventMouseEnter: info => this.renderTooltip(info),
                 eventMouseLeave: info => this.closeTooltip(info),
                 initialView: 'dayGridMonth',
                 events: [
-                    {title: 'James', start: '2022-07-02'},
-                    {title: 'John', date: '2022-07-09'},
+                    {title: 'James', date: '2022-07-02'},
+                    {title: 'John', start: '2022-07-09', end: '2022-07-11'},
                     {title: 'Thomas', date: '2022-07-09'},
                     {
                         title: 'Tomy',
@@ -44,15 +45,28 @@ export default {
         };
     },
     methods: {
-        closeTooltip(event) {
+        closeTooltip() {
             const tooltip = document.getElementById('tooltip-box');
 
             tooltip.addEventListener('mouseleave', event => {
                 tooltip.removeAttribute('data-show');
             });
         },
+        calculateDayRange(event) {
+            const startDate = new Date(event.event._instance.range.start);
+            const endDate = new Date(event.event._instance.range.end);
+
+            const minute = 1000 * 60;
+            const hour = minute * 60;
+            const day = hour * 24;
+            const calculateDay = endDate.getTime() - startDate.getTime();
+
+            this.timeline = Math.round(calculateDay / day);
+        },
         renderTooltip(event) {
+            this.calculateDayRange(event);
             this.currentEvent = event.event.title;
+
             const tooltip = document.getElementById('tooltip-box');
 
             const popperInstance = createPopper(event.el, tooltip, {
@@ -67,7 +81,6 @@ export default {
             });
 
             tooltip.setAttribute('data-show', '');
-
             popperInstance.update();
         },
     },

@@ -2,7 +2,7 @@
     <div id="tooltip" class="tooltip">
         <div class="title">
             <p class="title-event">Casual leave</p>
-            <p class="day">1 DAY</p>
+            <p class="day">{{ timeline }} DAY</p>
             <p class="status">personal</p>
         </div>
         <div class="user-container">
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-    props: ['currentEvent'],
+    props: ['currentEvent', 'timeline'],
 };
 </script>
 
