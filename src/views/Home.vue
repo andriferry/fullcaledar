@@ -8,6 +8,8 @@
 import FullCalendar from '@fullcalendar/vue';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css'; // optional for styling
 
 export default {
     name: 'Home',
@@ -18,15 +20,20 @@ export default {
         return {
             calendarOptions: {
                 plugins: [dayGridPlugin, interactionPlugin],
+                eventMouseEnter: this.handleDateClick,
                 initialView: 'dayGridMonth',
                 events: [
-                    {title: 'event 1', date: '2022-07-02'},
-                    {title: 'event 2', date: '2022-07-30'},
+                    {title: 'new event 1', date: '2022-07-02'},
+                    {title: 'event 2', date: '2022-07-09'},
                 ],
             },
         };
     },
+    methods: {
+        handleDateClick(event) {
+            // console.log(event.view.getCurrentData());
+            console.log(event.event.title);
+        },
+    },
 };
 </script>
-
-<style scoped></style>
