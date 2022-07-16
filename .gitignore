@@ -15,9 +15,10 @@ pnpm-debug.log*
 
 .firebase
 
-.firebaseserc
+.firebaserc
 
-.firebase.json
+firebase.json
+
 
 # Editor directories and files
 .idea
