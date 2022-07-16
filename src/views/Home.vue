@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <FullCalendar :options="calendarOptions" />
-        <div id="tooltipTrial" role="tooltip">
+        <div id="tooltip-box" role="tooltip">
             <div id="tooltip" class="tooltip">
                 <div class="title">
                     <p class="title-event">Casual leave</p>
@@ -70,60 +70,29 @@ export default {
     },
     methods: {
         closeTooltip(event) {
-            const tooltip = document.getElementById('tooltipTrial');
-            tooltip.removeAttribute('data-show');
+            const tooltip = document.getElementById('tooltip-box');
+
+            tooltip.addEventListener('mouseleave', event => {
+                tooltip.removeAttribute('data-show');
+            });
         },
         renderTooltip(event) {
-            const tooltip = document.getElementById('tooltipTrial');
+            const tooltip = document.getElementById('tooltip-box');
 
             const popperInstance = createPopper(event.el, tooltip, {
                 modifiers: [
                     {
                         name: 'offset',
                         options: {
-                            offset: [0, 8],
+                            offset: [-70, 8],
                         },
                     },
                 ],
             });
 
-            function show() {
-                tooltip.setAttribute('data-show', '');
+            tooltip.setAttribute('data-show', '');
 
-                // We need to tell Popper to update the tooltip position
-                // after we show the tooltip, otherwise it will be incorrect
-                popperInstance.update();
-            }
-
-            show();
-
-            // tippy(el, {
-            //     content: 'template.innerHTML',
-            //     render(instance) {
-            //         const popper = document.createElement('div');
-            //         const box = document.createElement('div');
-
-            //         popper.appendChild(box);
-
-            //         box.appendChild(tooltip);
-            //         // function onUpdate(prevProps, nextProps) {
-            //         //     if (prevProps.content !== nextProps.content) {
-            //         //         box.textContent = nextProps.content;
-            //         //     }
-            //         // }
-
-            //         return {
-            //             popper,
-            //             // onUpdate, // optional
-            //         };
-            //     },
-            //     animation: 'fade',
-            //     allowHTML: true,
-            //     theme: 'light',
-            // });
-            // console.log(event);
-            // // console.log(event.view.getCurrentData());
-            // console.log(event.event.title);
+            popperInstance.update();
         },
     },
 };
@@ -135,10 +104,9 @@ export default {
     font-family: 'Inter', sans-serif;
     background-color: white;
     box-shadow: 10px;
-    margin: 20px;
+    /* margin: 20px; */
     color: white;
     min-height: 100px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .tooltip .title {
@@ -238,31 +206,32 @@ button.cancel {
     font-weight: 700;
     font-size: 15px;
 }
-#tooltipTrial {
+#tooltip-box {
     z-index: 99;
     color: white;
+    background-color: white;
     font-weight: bold;
-
     border-radius: 4px;
     display: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-#tooltipTrial[data-show] {
+#tooltip-box[data-show] {
     display: block;
 }
 
-#tooltipTrial[data-popper-placement^='top'] > #arrow {
+#tooltip-box[data-popper-placement^='top'] > #arrow {
     bottom: -4px;
 }
 
-#tooltipTrial[data-popper-placement^='bottom'] > #arrow {
+#tooltip-box[data-popper-placement^='bottom'] > #arrow {
     top: -4px;
 }
 
-#tooltipTrial[data-popper-placement^='left'] > #arrow {
+#tooltip-box[data-popper-placement^='left'] > #arrow {
     right: -4px;
 }
 
-#tooltipTrial[data-popper-placement^='right'] > #arrow {
+#tooltip-box[data-popper-placement^='right'] > #arrow {
     left: -4px;
 }
 
