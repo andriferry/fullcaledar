@@ -1,5 +1,5 @@
 <template>
-    <div class="tooltip" style="">
+    <div id="tooltip" class="tooltip">
         <div class="title">
             <p class="title-event">Casual leave</p>
             <p class="day">1 DAY</p>
@@ -9,13 +9,13 @@
             <div class="user">
                 <div class="avatar-container">
                     <div class="avatar">
-                        <p class="" style="margin: 0px">JH</p>
+                        <p class="" style="margin: 0px; padding: 10px">JH</p>
                     </div>
                 </div>
 
                 <div class="user-info">
                     <p class="user-name" style="margin: 0px">
-                        Janitha Harischandra
+                        {{ currentEvent }}
                     </p>
                     <p class="user-task" style="margin: 0px">ArcticHare</p>
                 </div>
@@ -29,26 +29,23 @@
 
 <script>
 export default {
-    props: ['hello'],
+    props: ['currentEvent'],
 };
 </script>
 
 <style scoped>
 .tooltip {
     width: 300px;
+    font-family: 'Inter', sans-serif;
     background-color: white;
     box-shadow: 10px;
-    margin: 20px;
+    /* margin: 20px; */
     color: white;
     min-height: 100px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .tooltip .title {
     padding: 20px;
-    /* display: flex;
-
-    justify-content: start; */
 }
 
 .tooltip .title .title-event {
