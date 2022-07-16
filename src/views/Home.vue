@@ -8,10 +8,21 @@
                 <p class="day">1 DAY</p>
                 <p class="status">personal</p>
             </div>
-            <div class="user">
-                <p class="title-event">Casual leave</p>
-                <p class="day">1 DAY</p>
-                <p class="status">personal</p>
+            <div class="user-container">
+                <div class="user">
+                    <div class="avatar-container">
+                        <div class="avatar">
+                            <p class="" style="margin: 0px">JH</p>
+                        </div>
+                    </div>
+
+                    <div class="user-info">
+                        <p class="user-name" style="margin: 0px">
+                            Janitha Harischandra
+                        </p>
+                        <p class="user-task" style="margin: 0px">ArcticHare</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -86,7 +97,7 @@ export default {
     margin: 0px;
 }
 .tooltip .title .day {
-    color: black;
+    color: rgb(52, 49, 49);
     text-align: start;
     text-transform: uppercase;
     font-weight: 500;
@@ -100,5 +111,57 @@ export default {
     font-weight: 700;
     font-size: 13px;
     margin: 0px;
+}
+
+.tooltip .user-container {
+    background: #f5f5f5;
+}
+
+.user-container .user {
+    display: flex;
+    color: rgb(52, 49, 49);
+    gap: 1rem;
+    margin: 0px 20px;
+    height: 60px;
+}
+.user .avatar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.user-container .user .avatar-container .avatar {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background: teal;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.user .user-info {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.user .user-info p {
+    text-align: start;
+}
+
+.user .user-info .user-name {
+    color: rgb(52, 49, 49);
+    font-weight: 600;
+}
+.user .user-task {
+    color: grey;
+    font-weight: 500;
 }
 </style>
